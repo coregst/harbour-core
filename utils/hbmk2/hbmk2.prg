@@ -4747,6 +4747,7 @@ STATIC FUNCTION __hbmk( aArgs, nArgTarget, nLevel, /* @ */ lPause, /* @ */ lExit
             CASE _WARN_YES
                IF HBMK_ISCOMP( "clang|clang64" )
                   AAdd( hbmk[ _HBMK_aOPTC ], "-W -Weverything" )
+                  AAdd( hbmk[ _HBMK_aOPTC ], "-Wshadow -Wdouble-promotion" )
                   AAdd( hbmk[ _HBMK_aOPTC ], "-Wno-padded -Wno-cast-align -Wno-float-equal -Wno-missing-prototypes" )
                   AAdd( hbmk[ _HBMK_aOPTC ], "-Wno-disabled-macro-expansion -Wno-undef -Wno-unused-macros -Wno-variadic-macros -Wno-documentation" )
                   AAdd( hbmk[ _HBMK_aOPTC ], "-Wno-switch-enum" )
@@ -4759,8 +4760,14 @@ STATIC FUNCTION __hbmk( aArgs, nArgTarget, nLevel, /* @ */ lPause, /* @ */ lExit
                   AAdd( hbmk[ _HBMK_aOPTC ], "-Wno-empty-translation-unit" )
                ELSE
                   AAdd( hbmk[ _HBMK_aOPTC ], "-W -Wall" )
+                  IF hbmk[ _HBMK_cCOMPVer ] >= "0408"
+                     AAdd( hbmk[ _HBMK_aOPTC ], "-Wdouble-promotion -Wjump-misses-init -Wlogical-op" )
+                  ENDIF
                   IF hbmk[ _HBMK_cCOMPVer ] >= "0601"
                      AAdd( hbmk[ _HBMK_aOPTC ], "-Wlogical-op -Wduplicated-cond -Wshift-negative-value -Wnull-dereference" )
+                  ENDIF
+                  IF hbmk[ _HBMK_cCOMPVer ] >= "0701"
+                     AAdd( hbmk[ _HBMK_aOPTC ], "-Wduplicated-branches -Wrestrict" )
                   ENDIF
                ENDIF
                EXIT
@@ -5165,8 +5172,14 @@ STATIC FUNCTION __hbmk( aArgs, nArgTarget, nLevel, /* @ */ lPause, /* @ */ lExit
          CASE _WARN_MAX ; AAdd( hbmk[ _HBMK_aOPTC ], "-W -Wall -pedantic" ) ; EXIT
          CASE _WARN_YES
             AAdd( hbmk[ _HBMK_aOPTC ], "-W -Wall" )
+            IF hbmk[ _HBMK_cCOMPVer ] >= "0408"
+               AAdd( hbmk[ _HBMK_aOPTC ], "-Wdouble-promotion -Wjump-misses-init -Wlogical-op" )
+            ENDIF
             IF hbmk[ _HBMK_cCOMPVer ] >= "0601"
                AAdd( hbmk[ _HBMK_aOPTC ], "-Wlogical-op -Wduplicated-cond -Wshift-negative-value -Wnull-dereference" )
+            ENDIF
+            IF hbmk[ _HBMK_cCOMPVer ] >= "0701"
+               AAdd( hbmk[ _HBMK_aOPTC ], "-Wduplicated-branches -Wrestrict" )
             ENDIF
             EXIT
          CASE _WARN_LOW
